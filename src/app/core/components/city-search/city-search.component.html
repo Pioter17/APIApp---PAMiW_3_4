@@ -1,0 +1,16 @@
+<mat-form-field>
+  <mat-label>Znajdź miejscowość</mat-label>
+  <input
+    type="text"
+    [formControl]="control"
+    matInput
+    (submit)="onSubmit()"
+  >
+  <mat-icon matSuffix>
+    keyboard_double_arrow_right
+  </mat-icon>
+    <!-- <mat-option
+      *ngFor="let option of options$ | async"
+      [value]="option?.LocalizedName"
+    > -->
+</mat-form-field>

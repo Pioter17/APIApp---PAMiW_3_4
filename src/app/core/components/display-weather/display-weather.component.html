@@ -1,0 +1,11 @@
+<button type="submit" (click)="getCurrentLocation()" *ngIf="selectedOption != ''">Wyświetl</button><br>
+<div class="display" *ngIf="cityIsPicked">
+  <ul>
+    <li>Temperatura teraz: {{ temp[0] }} °C</li>
+    <li>Temperatura za godzinę: {{ temp[1] }} °C</li>
+    <li>Temperatura za 12 godzin {{ temp[2] }} °C</li>
+    <li>Temperatura jutro: {{ temp[3] }} °C</li>
+    <li>Temperatura za pięć dni: {{ temp[4] }} °C</li>
+    <li>Temperatura wczoraj: {{ temp[5] }} °C</li>
+  </ul>
+</div>
