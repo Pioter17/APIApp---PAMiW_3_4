@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ApiManagementServiceService } from './core/services/api-management-service.service';
+import { ApiManagementServiceService } from './core/services/api-weather-service.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';

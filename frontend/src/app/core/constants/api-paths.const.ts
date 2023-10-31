@@ -6,7 +6,10 @@ export const PATHS = {
   ONE_DAY_FORECAST:  '/forecasts/v1/daily/1day/:locationKey',
   FIVE_DAYS_FORECAST: '/forecasts/v1/daily/5day/:locationKey',
   YESTERDAYS_WEATHER: '/currentconditions/v1/:locationKey/historical/24',
-  API_BASE_PATH: 'http://dataservice.accuweather.com',
-  API_KEY: 'TPvPdYgL4gc3n5sr7spv4LhJrU3KpELC',
+  API_WEATHER_BASE_PATH: 'http://dataservice.accuweather.com',
+  API_WEATHER_KEY: 'TPvPdYgL4gc3n5sr7spv4LhJrU3KpELC',
   LANGUAGE: 'pl',
+  API_MOVIES_BASE_PATH: 'http://localhost:8000',
+  SEARCH_MOVIES_ENDPOINT: '/movies/?',
+  MOVIES_ENDPOINT: '/movies/',
 }

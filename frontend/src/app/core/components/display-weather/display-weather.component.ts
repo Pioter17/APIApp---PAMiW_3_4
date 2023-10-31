@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { City, Weather, Forecast, SForecast, PForecast } from '../../interfaces/Models.interface';
-import { ApiManagementServiceService } from '../../services/api-management-service.service';
+import { ApiManagementServiceService } from '../../services/api-weather-service.service';
 
 @Component({
   selector: 'app-display-weather',

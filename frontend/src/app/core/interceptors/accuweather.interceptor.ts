@@ -9,10 +9,10 @@ export class AccuweatherInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let clone = req.clone();
 
-    if (clone.url.startsWith(PATHS.API_BASE_PATH)) {
+    if (clone.url.startsWith(PATHS.API_WEATHER_BASE_PATH)) {
       clone = clone.clone({
         params: clone.params.appendAll(
-          {apikey: PATHS.API_KEY, language: PATHS.LANGUAGE}
+          {apikey: PATHS.API_WEATHER_KEY, language: PATHS.LANGUAGE}
         )
       });
     }

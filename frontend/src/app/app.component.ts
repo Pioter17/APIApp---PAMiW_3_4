@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiManagementServiceService } from './core/services/api-management-service.service';
+import { ApiManagementServiceService } from './core/services/api-weather-service.service';
 import { City, Forecast, PForecast, SForecast, Weather } from './core/interfaces/Models.interface';
 import { map } from 'rxjs';
 

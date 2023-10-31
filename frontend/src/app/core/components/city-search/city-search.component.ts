@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { City } from '../../interfaces/Models.interface';
-import { ApiManagementServiceService } from '../../services/api-management-service.service';
+import { ApiManagementServiceService } from '../../services/api-weather-service.service';
 import { BehaviorSubject, Observable, debounceTime, distinctUntilChanged, filter, of, switchMap, take, tap } from 'rxjs';
 import { ENTER } from '@angular/cdk/keycodes';
 
