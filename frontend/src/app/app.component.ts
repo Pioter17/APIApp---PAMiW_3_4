@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiManagementServiceService } from './core/services/api-weather-service.service';
-import { City, Forecast, PForecast, SForecast, Weather } from './core/interfaces/Models.interface';
-import { map } from 'rxjs';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { BgcolorManagerService } from './core/services/bgcolor-manager.service';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +8,18 @@ import { map } from 'rxjs';
 })
 export class AppComponent implements OnInit{
   title = 'WeatherForecast';
+  backgroundColor: string;
 
   constructor(
-    private api: ApiManagementServiceService
-  ){ }
+    private bgcolor: BgcolorManagerService,
+    private renderer: Renderer2,
+    private el: ElementRef
+  ) {}
 
   ngOnInit(): void {
+    this.bgcolor.getBackgroundColor().subscribe((color) => {
+      this.backgroundColor = color;
+      this.renderer.setStyle(this.el.nativeElement.ownerDocument.body, 'background-color', color);
+    });
   }
 }

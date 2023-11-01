@@ -8,7 +8,7 @@ import { Movie } from '../interfaces/movie';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiMovieServiceService {
+export class ApiMovieService {
 
   private http = inject(HttpClient);
 

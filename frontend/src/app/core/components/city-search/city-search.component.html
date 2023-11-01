@@ -1,16 +1,30 @@
-<mat-form-field>
-  <mat-label>Znajdź miejscowość</mat-label>
-  <input
-    type="text"
-    [formControl]="control"
-    matInput
-    (submit)="onSubmit()"
-  >
-  <mat-icon matSuffix>
-    keyboard_double_arrow_right
-  </mat-icon>
-    <!-- <mat-option
+<div class="container">
+  <div class="navigation">
+    <mat-form-field>
+      <mat-label>Znajdź miejscowość</mat-label>
+      <input
+        type="text"
+        [formControl]="control"
+        matInput
+        (keyup.Enter)="onEnter($event)"
+      >
+      <mat-icon matSuffix *ngIf="!cities">
+        keyboard_double_arrow_right
+      </mat-icon>
+      <mat-icon matSuffix *ngIf="cities">
+        keyboard_double_arrow_down
+      </mat-icon>
+    </mat-form-field>
+    <button
+      class="city"
       *ngFor="let option of options$ | async"
       [value]="option?.LocalizedName"
-    > -->
-</mat-form-field>
+      (click)="chooseCity(option)"
+    >
+      {{ option?.LocalizedName }}
+    </button>
+  </div>
+  <div class="content" *ngIf="selectedCity">
+    <app-display-weather [city]="selectedCity"></app-display-weather>
+  </div>
+</div>

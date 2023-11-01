@@ -1,75 +1,74 @@
-import { Component, inject } from '@angular/core';
-import { City, Weather, Forecast, SForecast, PForecast } from '../../interfaces/Models.interface';
-import { ApiManagementServiceService } from '../../services/api-weather-service.service';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, ViewChild, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { City, Forecast, PForecast, SForecast, Weather } from '../../interfaces/Models.interface';
+import { ApiWeatherService } from '../../services/api-weather-service.service';
+import { BgcolorManagerService } from '../../services/bgcolor-manager.service';
 
 @Component({
   selector: 'app-display-weather',
   templateUrl: './display-weather.component.html',
   styleUrls: ['./display-weather.component.scss']
 })
-export class DisplayWeatherComponent {
+export class DisplayWeatherComponent implements OnChanges, AfterViewInit{
 
-  api = inject(ApiManagementServiceService);
+  api = inject(ApiWeatherService);
+  bgcolor = inject(BgcolorManagerService);
+  @ViewChild('temperatureDiv') temperatureDiv: ElementRef = null;
+  temp : number;
 
-  city: string = '';
-  options : string[] = [];
-  selectedOption: string = '';
-  cities: City[] = [];
-  temp: number[] = [0, 0, 0, 0, 0, 0];
-  weather!: Weather;
-  forecast!: Forecast;
-  sforecast!: SForecast;
-  pforecast!: PForecast;
-  cityIsPicked = false;
+  @Input() city: City;
+  @Input() city2: string;
 
-  getCurrentLocation(){
-    let index = this.options.indexOf(this.selectedOption);
-    this.api.getCurrentConditions(this.cities[index].Key).subscribe((data)=>{
-      if (data && data.length > 0) {
-        this.weather = data[0];
+  weather$: Observable<Weather[]>;
+  yesterdayWeather$: Observable<PForecast[]>;
+  oneHourWeather$: Observable<SForecast[]>;
+  twelveHoursWeather$: Observable<SForecast[]>;
+  tomorrowWeather$: Observable<Forecast>;
+  fiveDaysWeather$: Observable<Forecast>;
+
+  ngOnChanges(): void {
+    this.getTemperatures();
+    setTimeout(() => {
+      const divContent = this.temperatureDiv.nativeElement.textContent;
+      const regex = /Temperatura teraz:\s(\d+\.\d+)\s°C/;
+      const match = regex.exec(divContent);
+
+      if (match && match.length > 1) {
+        this.temp = parseFloat(match[1]);
+        this.changeBgColor();
       }
-      this.cityIsPicked=true;
-      this.temp[0] = this.weather.Temperature.Metric.Value;
-      this.getOneHourForecast(index);
-      this.getTwelveHourForecast(index);
-      this.getOneDailyForecast(index);
-      this.getFiveDaysForecast(index);
-      this.getYesterdayForecast(index);
-    });
+    }, 500);
   }
 
-  getOneHourForecast(index: number){
-    this.api.getOneHourForecast(this.cities[index].Key).subscribe((data)=>{
-      this.sforecast = data[0];
-      this.temp[1] = this.sforecast.Temperature.Value;
-    });
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const divContent = this.temperatureDiv.nativeElement.textContent;
+      const regex = /Temperatura teraz:\s(\d+\.\d+)\s°C/;
+      const match = regex.exec(divContent);
+
+      if (match && match.length > 1) {
+        this.temp = parseFloat(match[1]);
+        this.changeBgColor();
+      }
+    }, 500);
   }
 
-  getTwelveHourForecast(index: number){
-    this.api.getTwelveHourForecast(this.cities[index].Key).subscribe((data)=>{
-      this.sforecast = data[11];
-      this.temp[2] = this.sforecast.Temperature.Value;
-    });
+  getTemperatures(){
+    this.weather$ = this.api.getCurrentConditions(this.city.Key);
+    this.yesterdayWeather$ = this.api.getYesterdayForecast(this.city.Key);
+    this.oneHourWeather$ = this.api.getOneHourForecast(this.city.Key);
+    this.twelveHoursWeather$ = this.api.getTwelveHourForecast(this.city.Key);
+    this.tomorrowWeather$ = this.api.getOneDailyForecast(this.city.Key);
+    this.fiveDaysWeather$ = this.api.getFiveDaysForecast(this.city.Key);
   }
 
-  getOneDailyForecast(index: number){
-    this.api.getOneDailyForecast(this.cities[index].Key).subscribe((data)=>{
-      this.forecast = data;
-      this.temp[3] = this.forecast.DailyForecasts[0].Temperature.Minimum.Value;
-    });
-  }
-
-  getFiveDaysForecast(index: number){
-    this.api.getFiveDaysForecast(this.cities[index].Key).subscribe((data)=>{
-      this.forecast = data;
-      this.temp[4] = this.forecast.DailyForecasts[4].Temperature.Minimum.Value;
-    });
-  }
-
-  getYesterdayForecast(index: number){
-    this.api.getYesterdayForecast(this.cities[index].Key).subscribe((data)=>{
-      this.pforecast = data[23];
-      this.temp[5] = this.pforecast.Temperature.Metric.Value;
-    });
+  changeBgColor(){
+    console.log(this.temp)
+    if(this.temp > 15){
+      this.bgcolor.setBackgroundColor('#fdeece');
+    }
+    else {
+      this.bgcolor.setBackgroundColor('#cee8fd');
+    }
   }
 }

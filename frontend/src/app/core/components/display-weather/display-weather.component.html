@@ -1,11 +1,21 @@
-<button type="submit" (click)="getCurrentLocation()" *ngIf="selectedOption != ''">Wyświetl</button><br>
-<div class="display" *ngIf="cityIsPicked">
-  <ul>
-    <li>Temperatura teraz: {{ temp[0] }} °C</li>
-    <li>Temperatura za godzinę: {{ temp[1] }} °C</li>
-    <li>Temperatura za 12 godzin {{ temp[2] }} °C</li>
-    <li>Temperatura jutro: {{ temp[3] }} °C</li>
-    <li>Temperatura za pięć dni: {{ temp[4] }} °C</li>
-    <li>Temperatura wczoraj: {{ temp[5] }} °C</li>
-  </ul>
+<h1>Miasto {{ city.LocalizedName }}</h1>
+<div class="info">
+  <div class="display" *ngIf="yesterdayWeather$ | async as yesterdayData">
+      Temperatura wczoraj: {{ yesterdayData[23].Temperature.Metric.Value }} °C
+  </div>
+  <div class="display" *ngFor="let w of weather$ | async" #temperatureDiv>
+    <b>Temperatura teraz: {{ w.Temperature.Metric.Value }} °C</b>
+  </div>
+  <div class="display" *ngIf="oneHourWeather$ | async as oneHourData">
+    Temperatura za godzinę: {{ oneHourData[0].Temperature.Value }} °C
+  </div>
+  <div class="display" *ngIf="twelveHoursWeather$ | async as twelveHoursData">
+      Temperatura za 12 godzin: {{ twelveHoursData[11].Temperature.Value }} °C
+  </div>
+  <div class="display" *ngIf="tomorrowWeather$ | async as tomorrowData">
+      Temperatura jutro: {{ tomorrowData.DailyForecasts[0].Temperature.Minimum.Value }} °C
+  </div>
+  <div class="display" *ngIf="fiveDaysWeather$ | async as weatherData">
+    Temperatura za pięć dni: {{ weatherData.DailyForecasts[4].Temperature.Minimum.Value }} °C
+  </div>
 </div>

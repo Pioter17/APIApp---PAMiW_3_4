@@ -1,28 +1,10 @@
-export interface AdministrativeArea {
-  ID: string;
-  LocalizedName: string;
-}
-
-export interface Alert {
-  ID: string;
-  LocalizedDescription: string;
-}
-
 export interface City {
  Version: number;
  Key: string;
  Type: string;
  Rank: number;
  LocalizedName: string;
- Country: Country;
- AdministrativeArea: AdministrativeArea;
 }
-
-export interface Country {
-  ID: string;
-  LocalizedName: string;
-}
-
 
 export interface Imperial {
   Value: number;
@@ -46,12 +28,8 @@ export interface Weather {
   EpochTime: number;
   WeatherText: string;
   WeatherIcon: number;
-  HasPrescipitation: boolean;
-  PrescipitationType: object;
   IsDayTime: boolean;
   Temperature: Temperature;
-  MobileLink: string;
-  Link: string;
 }
 
 export interface Forecast {
@@ -79,4 +57,17 @@ export interface SForecast {
 
 export interface PForecast {
   Temperature: Temperature;
+}
+
+export interface ForecastData {
+  Temperature: {
+    Minimum: {
+      Value: number,
+      Unit: string,
+    },
+    Maximum: {
+      Value: number,
+      Unit: string,
+    }
+  }[]
 }

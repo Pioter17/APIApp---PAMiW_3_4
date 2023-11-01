@@ -1,0 +1,7 @@
+<button mat-button (click)="showMovies()">Pokaż listę książek</button>
+<button mat-button (click)="hideMovies()" *ngIf="show">Schowaj listę książek</button>
+
+
+<button (click)="getMovies()">pobierz dane</button>
+
+<p *ngIf="show">Lista książek</p>
