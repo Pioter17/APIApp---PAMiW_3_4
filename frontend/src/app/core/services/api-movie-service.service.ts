@@ -31,7 +31,7 @@ export class ApiMovieService {
   }
 
   deleteMovie(id: number){
-    return this.http.delete(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.MOVIES_ENDPOINT}${id}`)
+    return this.http.delete<Movie>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.MOVIES_ENDPOINT}` + "/" + id)
   }
 }
 

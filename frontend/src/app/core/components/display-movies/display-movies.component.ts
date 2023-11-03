@@ -66,6 +66,7 @@ export class DisplayMoviesComponent {
   }
 
   getMovies(){
+    this.movies = [];
     this.showMovies();
     this.api.getMovies().subscribe((res)=>{
       res.forEach((elem)=>{
@@ -84,7 +85,11 @@ export class DisplayMoviesComponent {
   }
 
   deleteMovie(id: number){
-    this.api.deleteMovie(id);
+    this.api.deleteMovie(id).subscribe(
+      (response) => {
+        // Obsługa sukcesu, np. wyświetlenie informacji o usunięciu filmu
+        console.log('Film został usunięty');
+      },);
     let index: number;
     this.movies.forEach((elem)=>{
       if (elem.id == id){
