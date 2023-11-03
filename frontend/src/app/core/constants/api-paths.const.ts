@@ -9,7 +9,7 @@ export const PATHS = {
   API_WEATHER_BASE_PATH: 'http://dataservice.accuweather.com',
   API_WEATHER_KEY: 'TPvPdYgL4gc3n5sr7spv4LhJrU3KpELC',
   LANGUAGE: 'pl',
-  API_MOVIES_BASE_PATH: 'http://localhost:8000',
+  API_MOVIES_BASE_PATH: 'http://localhost:8080',
   SEARCH_MOVIES_ENDPOINT: '/movies/?',
-  MOVIES_ENDPOINT: '/movies/',
+  MOVIES_ENDPOINT: '/movies',
 }

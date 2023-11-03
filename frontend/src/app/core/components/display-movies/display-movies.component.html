@@ -1,7 +1,59 @@
-<button mat-button (click)="showMovies()">Pokaż listę książek</button>
-<button mat-button (click)="hideMovies()" *ngIf="show">Schowaj listę książek</button>
+  <button mat-button (click)="getMovies()">Pokaż listę filmów</button>
+<button mat-button (click)="hideMovies()" *ngIf="show">Schowaj listę filmów</button>
 
 
-<button (click)="getMovies()">pobierz dane</button>
+<!-- <button (click)="getMovies()">pobierz dane</button> -->
 
-<p *ngIf="show">Lista książek</p>
+<p *ngIf="show">Lista filmów</p>
+
+
+<table
+  *ngIf="show"
+  class="movie__table"
+  border="1px solid black"
+>
+  <tr>
+    <th>Tytuł</th>
+    <th>Reżyser</th>
+    <th>Producent</th>
+    <th>Długość</th>
+    <th>Ocena</th>
+    <th>
+      <input
+        matInput
+        name="search"
+      >
+    </th>
+  </tr>
+  <tr
+    *ngFor="let movie of movies"
+    class="data__row"
+  >
+    <td> {{ movie.name }} </td>
+    <td> {{ movie.director }} </td>
+    <td> {{ movie.producer }} </td>
+    <td> {{ movie.length }} </td>
+    <td> {{ movie.rating }} </td>
+    <td>
+      <button mat-button (click)="updateMovie()">
+        <mat-icon>
+          edit
+        </mat-icon>
+      </button>
+      <button mat-button (click)="deleteMovie(movie.id)">
+        <mat-icon>
+          delete
+        </mat-icon>
+      </button>
+    </td>
+  </tr>
+  <tr class="last__row">
+    <td class="add__cell">
+      <button mat-button (click)="addMovie()" class="add">
+        <mat-icon>
+          add
+        </mat-icon>
+      </button>
+    </td>
+  </tr>
+</table>
