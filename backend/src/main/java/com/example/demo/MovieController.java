@@ -10,10 +10,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/movies")
@@ -34,12 +32,23 @@ public class MovieController {
         return movieRepository.findAll();
     }
 
-//    // Endpoint do pobierania pojedynczego filmu po ID
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Movie> getMovie(@PathVariable Long id) {
-//        Optional<Movie> movie = movieRepository.findById(id);
-//        return movie.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
+    // Endpoint do pobierania filmów zawierających w nazwie podanego stringa
+    @GetMapping("/search")
+    public ResponseEntity<List<Movie>> searchMovies(@RequestParam("name") String name) {
+        List<Movie> movies = movieRepository.findAll();
+        String fragmentLowerCase = name.toLowerCase();
+
+        List<Movie> matchingMovies = movies
+                .stream()
+                .filter(movie -> movie.getName().toLowerCase().contains(fragmentLowerCase))
+                .collect(Collectors.toList());
+
+        if (matchingMovies.isEmpty()) {
+            return ResponseEntity.ok(Collections.emptyList());
+        } else {
+            return ResponseEntity.ok(matchingMovies);
+        }
+    }
 
     // Endpoint do dodawania nowego filmu
     @PostMapping

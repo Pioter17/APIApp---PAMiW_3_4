@@ -6,3 +6,7 @@ export interface Movie {
   rating: number;
   length: number;
 }
+
+export interface MovieDialogData extends Omit<Movie, "id"> {
+  isEdit: boolean;
+}

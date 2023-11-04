@@ -12,7 +12,7 @@ export class ApiMovieService {
 
   private http = inject(HttpClient);
 
-  getAutoCompleteLocations(name: string) : Observable<Movie[]> {
+  getFilteredMovies(name: string) : Observable<Movie[]> {
     const params = (new HttpParams).append("name", name);
 
     return this.http.get<Movie[]>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.SEARCH_MOVIES_ENDPOINT}`, {params});
@@ -22,12 +22,12 @@ export class ApiMovieService {
     return this.http.get<Movie[]>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.MOVIES_ENDPOINT}`);
   }
 
-  postMovie(movie: Movie){
-    return this.http.post(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.MOVIES_ENDPOINT}`, movie)
+  postMovie(movie: Movie) : Observable<Movie> {
+    return this.http.post<Movie>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.MOVIES_ENDPOINT}`, movie)
   }
 
-  putMovie(id: number, movie: Movie){
-    return this.http.put(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.MOVIES_ENDPOINT}${id}`, movie)
+  putMovie(id: number, movie: Movie) : Observable<Movie> {
+    return this.http.put<Movie>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.MOVIES_ENDPOINT}` + "/" + id, movie)
   }
 
   deleteMovie(id: number){

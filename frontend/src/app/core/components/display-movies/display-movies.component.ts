@@ -1,6 +1,10 @@
-import { Component, Inject, inject } from '@angular/core';
-import { ApiMovieService } from '../../services/api-movie-service.service';
+import { Component, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { filter } from 'rxjs';
 import { Movie } from '../../interfaces/movie';
+import { ApiMovieService } from '../../services/api-movie-service.service';
+import { AddBookDialogComponent } from '../add-book-dialog/add-book-dialog.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-display-movies',
@@ -9,56 +13,18 @@ import { Movie } from '../../interfaces/movie';
 })
 export class DisplayMoviesComponent {
   show = false;
-  movies2 : Movie[] = [
-    {
-      id: 1,
-      name: "star wars",
-      director: "george lucas",
-      producer: "lucasfilm",
-      length: 140,
-      rating:10.00
-    },
-    {
-      id: 2,
-      name: "star wars2",
-      director: "george lucas",
-      producer: "lucasfilm",
-      length: 160,
-      rating:9.40
-    },
-    {
-      id: 3,
-      name: "star wars3",
-      director: "george lucas",
-      producer: "lucasfilm",
-      length: 120,
-      rating:8.50
-    },
-    {
-      id: 4,
-      name: "star wars4",
-      director: "george lucas",
-      producer: "lucasfilm",
-      length: 130,
-      rating: 7.00
-    },
-  ];
-
+  filtered = false;
   movies: Movie[] = [];
+  search: string;
 
   constructor(
-
+    private dialog: MatDialog,
   ){}
 
   api = inject(ApiMovieService);
 
-
-
-
-
   showMovies(){
     this.show = true;
-    // this.getMovies();
   }
 
   hideMovies(){
@@ -66,36 +32,81 @@ export class DisplayMoviesComponent {
   }
 
   getMovies(){
+    this.filtered = false;
     this.movies = [];
     this.showMovies();
-    this.api.getMovies().subscribe((res)=>{
-      res.forEach((elem)=>{
+    this.api.getMovies().subscribe((res) => {
+      res.forEach((elem) => {
         this.movies.push(elem);
       })
-      console.log(this.movies)
+    })
+  }
+
+  getFilteredMovies(){
+    this.filtered = true;
+    this.movies = [];
+    this.api.getFilteredMovies(this.search).subscribe((res) => {
+      res.forEach((elem) => {
+        this.movies.push(elem);
+      })
     })
   }
 
   addMovie(){
+    const dialogRef = this.dialog.open(AddBookDialogComponent, {
+      minWidth: '400px',
+      minHeight: '300px',
+    });
 
+    dialogRef.afterClosed().pipe(
+      filter((res) => !!res),
+    ).subscribe((res) => {
+      this.api.postMovie(res).subscribe(
+        (response) => {
+          let newMovie: Movie = response;
+          this.movies.push(newMovie);
+          console.log('Film został dodany');
+        },);
+    });
   }
 
-  updateMovie(){
-
-  }
-
-  deleteMovie(id: number){
-    this.api.deleteMovie(id).subscribe(
-      (response) => {
-        // Obsługa sukcesu, np. wyświetlenie informacji o usunięciu filmu
-        console.log('Film został usunięty');
-      },);
-    let index: number;
-    this.movies.forEach((elem)=>{
-      if (elem.id == id){
-        index = this.movies.indexOf(elem);
+  updateMovie(id: number, index: number){
+    const dialogRef = this.dialog.open(AddBookDialogComponent, {
+      minWidth: '400px',
+      minHeight: '300px',
+      data:{
+        ...this.movies[index],
+        isEdit: true,
       }
-    })
-    this.movies.splice(index, 1);
+    });
+
+    dialogRef.afterClosed().pipe(
+      filter((res) => !!res),
+    ).subscribe((res) => {
+      this.api.putMovie(id, res).subscribe(
+        (response) => {
+          let newMovie: Movie = response;
+          this.movies[index] = newMovie;
+          console.log('Film został zedytowany');
+        }
+      )
+    });
+  }
+
+  deleteMovie(id: number, index: number){
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      minWidth: '200px',
+      minHeight: '100px',
+    });
+
+    dialogRef.afterClosed().pipe(
+      filter((res) => !!res),
+    ).subscribe(() => {
+      this.api.deleteMovie(id).subscribe(
+        (response) => {
+          console.log('Film został usunięty');
+        },);
+      this.movies.splice(index, 1);
+    });
   }
 }

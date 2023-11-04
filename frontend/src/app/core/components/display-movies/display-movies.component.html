@@ -16,11 +16,17 @@
         <input
           matInput
           name="search"
+          [(ngModel)]="search"
         >
+        <button mat-button (click)="getFilteredMovies()">
+          <mat-icon>
+            search
+          </mat-icon>
+        </button>
       </th>
     </tr>
     <tr
-      *ngFor="let movie of movies"
+      *ngFor="let movie of movies; let i = index"
       class="data__row"
     >
       <td> {{ movie.name }} </td>
@@ -29,12 +35,12 @@
       <td> {{ movie.length }} </td>
       <td> {{ movie.rating }} </td>
       <td>
-        <button mat-button (click)="updateMovie()">
+        <button mat-button (click)="updateMovie(movie.id, i)">
           <mat-icon>
             edit
           </mat-icon>
         </button>
-        <button mat-button (click)="deleteMovie(movie.id)">
+        <button mat-button (click)="deleteMovie(movie.id, i)">
           <mat-icon>
             delete
           </mat-icon>
@@ -47,6 +53,11 @@
           <mat-icon>
             add
           </mat-icon>
+        </button>
+      </td>
+      <td *ngIf="filtered">
+        <button mat-button (click)="getMovies()">
+          Wyświetl wszystkie
         </button>
       </td>
     </tr>
