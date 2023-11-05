@@ -1,40 +1,45 @@
-package com.example.demo.model;
+package com.example.demo.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
+@Table(name = "movie")
 public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Size(min = 1, max = 255)
+//    @NotNull
+//    @Size(min = 1, max = 255)
     private String name;
 
-    @NotNull
-    @Size(min = 1, max = 255)
-    private String director;
+    @ManyToOne
+    @JoinColumn(name = "director_id")
+    private Director director;
 
-    @NotNull
-    @Size(min = 1, max = 255)
+//    @NotNull
+//    @Size(min = 1, max = 255)
     private String producer;
 
-    @NotNull
-    @Min(0)
-    @Max(10)
-    private double rating;
+//    @NotNull
+//    @Min(0)
+//    @Max(10)
+    private Double rating;
 
-    @NotNull
-    @Min(1)
-    private double length;
-    public Movie(Long id, String name, String director, String producer, double rating, double length) {
-//        this.id = id;
+//    @NotNull
+//    @Min(1)
+    private Double length;
+    public Movie(Long id, String name, Director director, String producer, double rating, double length) {
+        this.id = id;
+        this.name = name;
+        this.length = length;
+        this.director = director;
+        this.producer = producer;
+        this.rating = rating;
+    }
+
+    public Movie(String name, Director director, String producer, double rating, double length) {
         this.name = name;
         this.length = length;
         this.director = director;
@@ -49,47 +54,36 @@ public class Movie {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
-    public double getLength() {
+    public Double getLength() {
         return length;
     }
-
     public void setLength(double length) {
         this.length = length;
     }
-
-    public String getDirector() {
+    public Director getDirector() {
         return director;
     }
-
-    public void setDirector(String director) {
+    public void setDirector(Director director) {
         this.director = director;
     }
-
     public String getProducer() {
         return producer;
     }
-
     public void setProducer(String producer) {
         this.producer = producer;
     }
-
-    public double getRating() {
+    public Double getRating() {
         return rating;
     }
-
     public void setRating(double rating) {
         this.rating = rating;
     }

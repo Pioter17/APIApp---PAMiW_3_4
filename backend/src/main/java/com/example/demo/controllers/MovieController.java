@@ -1,8 +1,13 @@
-package com.example.demo;
+package com.example.demo.controllers;
 
-import com.example.demo.model.Movie;
+import com.example.demo.dtos.MovieDTO;
+import com.example.demo.models.Director;
+import com.example.demo.models.Movie;
+import com.example.demo.other.ServiceResponse;
+import com.example.demo.repositories.DirectorRepository;
 import com.example.demo.repositories.MovieRepository;
-import jakarta.validation.Valid;
+import com.example.demo.services.MovieDTOConverterService;
+import com.example.demo.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +25,16 @@ public class MovieController {
 
     private final MovieRepository movieRepository;
 
+    private final DirectorRepository directorRepository;
+    private final MovieService movieService;
+    private final MovieDTOConverterService movieDTOConverterService;
+
     @Autowired
-    public MovieController(MovieRepository movieRepository) {
+    public MovieController(MovieRepository movieRepository, DirectorRepository directorRepository,MovieService movieService , MovieDTOConverterService movieDTOConverterService) {
         this.movieRepository = movieRepository;
+        this.directorRepository = directorRepository;
+        this.movieService = movieService;
+        this.movieDTOConverterService = movieDTOConverterService;
     }
 
     // Endpoint do pobierania wszystkich filmów
@@ -53,36 +65,51 @@ public class MovieController {
     // Endpoint do dodawania nowego filmu
     @PostMapping
     @CrossOrigin(origins = "http://localhost:4200")
-    public ResponseEntity<Movie> addMovie(@Valid @RequestBody Movie movie) {
-        Movie addedMovie = movieRepository.save(movie);
-        return ResponseEntity.status(HttpStatus.CREATED).body(addedMovie);
+    public ServiceResponse<Movie> addMovie(@RequestBody MovieDTO movieDTO) {
+        Movie movie;
+        try{
+            movie = this.movieDTOConverterService.convert(movieDTO);
+        } catch (Exception e) {
+            return new ServiceResponse<Movie>(null,false,"Cannot parse item");
+        }
+        if (movie == null || movie.getDirector() == null || movie.getRating() == null || movie.getName() == null || movie.getLength() == null) {
+            return new ServiceResponse<>(null, false, "Body is missing");
+        }
+        Movie movieToAdd = new Movie(movie.getName(), movie.getDirector(), movie.getProducer(), movie.getRating(), movie.getLength());
+        return movieService.addMovie(movieToAdd);
     }
 
     // Endpoint do aktualizacji filmu po ID
     @PutMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:4200")
-    public ResponseEntity<Movie> updateMovie(@PathVariable Long id, @Valid @RequestBody Movie updatedMovie) {
-        Optional<Movie> movie = movieRepository.findById(id);
-        if (movie.isPresent()) {
-            Movie existingMovie = movie.get();
-            existingMovie.setName(updatedMovie.getName());
-            existingMovie.setDirector(updatedMovie.getDirector());
-            existingMovie.setProducer(updatedMovie.getProducer());
-            existingMovie.setRating(updatedMovie.getRating());
-            existingMovie.setLength(updatedMovie.getLength());
-            Movie updatedMovieResult = movieRepository.save(existingMovie);
-            return ResponseEntity.ok(updatedMovieResult);
-        } else {
-            return ResponseEntity.notFound().build();
+    public ServiceResponse<Movie> updateMovie(@PathVariable Long id, @RequestBody MovieDTO movieDTO) {
+        Movie movie;
+        try{
+            movie = this.movieDTOConverterService.convert(movieDTO);
+        } catch (Exception e) {
+            return new ServiceResponse<Movie>(null,false,"Cannot parse item");
         }
+        if (movie == null || movie.getDirector() == null || movie.getRating() == null || movie.getName() == null || movie.getLength() == null) {
+            return new ServiceResponse<>(null, false, "Body is missing");
+        }
+        Movie movieToUpdate = new Movie(id, movie.getName(), movie.getDirector(), movie.getProducer(), movie.getRating(), movie.getLength());
+
+        movieRepository.save(movieToUpdate);
+        return new ServiceResponse<Movie>(movie, true, "Movie updated");
     }
 
     // Endpoint do usuwania filmu po ID
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<Void> deleteMovie(@PathVariable Long id) {
-        Optional<Movie> movie = movieRepository.findById(id);
-        if (movie.isPresent()) {
+        Optional<Movie> optionalMovie = movieRepository.findById(id);
+        if (optionalMovie.isPresent()) {
+            Movie movie = optionalMovie.get();
+            Director director = movie.getDirector();
+            if (director != null) {
+                director.getMovies().remove(movie);
+                directorRepository.save(director);
+            }
             movieRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {

@@ -1,7 +1,9 @@
+import { Director } from "./director";
+
 export interface Movie {
   id: number;
   name: string;
-  director: string;
+  director: Director
   producer: string;
   rating: number;
   length: number;
