@@ -1,5 +1,5 @@
 <div class="container">
-  <button mat-button (click)="getMovies()">Pokaż listę filmów</button>
+  <button mat-button (click)="getMovies()" *ngIf="!show">Pokaż listę filmów</button>
   <button mat-button (click)="hideMovies()" *ngIf="show">Schowaj listę filmów</button>
   <table
     *ngIf="show"
@@ -26,7 +26,7 @@
       </th>
     </tr>
     <tr
-      *ngFor="let movie of movies; let i = index"
+      *ngFor="let movie of displayedMovies; let i = index"
       class="data__row"
     >
       <td> {{ movie.name }} </td>
@@ -59,6 +59,20 @@
         <button mat-button (click)="getMovies()">
           Wyświetl wszystkie
         </button>
+      </td>
+      <td colspan="5">
+        <mat-paginator #paginator
+               class="demo-paginator"
+               (page)="handlePageEvent($event)"
+               [length]="length"
+               [pageSize]="pageSize"
+               [disabled]="disabled"
+               [showFirstLastButtons]="showFirstLastButtons"
+               [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+               [hidePageSize]="hidePageSize"
+               [pageIndex]="pageIndex"
+               aria-label="Select page">
+          </mat-paginator>
       </td>
     </tr>
   </table>

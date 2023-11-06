@@ -1,5 +1,5 @@
 <div class="container">
-  <button mat-button (click)="getDirectors()">Pokaż reżyserów</button>
+  <button mat-button (click)="getDirectors()" *ngIf="!show">Pokaż reżyserów</button>
   <button mat-button (click)="hideDirectors()" *ngIf="show">Schowaj reżyserów</button>
   <table
     *ngIf="show"

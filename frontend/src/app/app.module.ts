@@ -20,6 +20,7 @@ import { AddMovieDialogComponent } from './core/components/add-movie-dialog/add-
 import { ConfirmationDialogComponent } from './core/components/confirmation-dialog/confirmation-dialog.component';
 import { DisplayDirectorsComponent } from './core/components/display-directors/display-directors.component';
 import { AddDirectorDialogComponent } from './core/components/add-director-dialog/add-director-dialog.component';
+import { MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { AddDirectorDialogComponent } from './core/components/add-director-dialo
     MatAutocompleteModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    MatPaginatorModule
   ],
   providers: [
     {

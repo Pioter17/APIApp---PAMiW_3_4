@@ -5,6 +5,7 @@ import { Movie, MovieResponse } from '../../interfaces/movie';
 import { ApiMovieService } from '../../services/api-movie-service.service';
 import { AddMovieDialogComponent } from '../add-movie-dialog/add-movie-dialog.component';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-display-movies',
@@ -15,6 +16,7 @@ export class DisplayMoviesComponent {
   show = false;
   filtered = false;
   movies: Movie[] = [];
+  displayedMovies: Movie[] = [];
   search: string;
 
   constructor(
@@ -32,23 +34,32 @@ export class DisplayMoviesComponent {
   }
 
   getMovies(){
+
     this.filtered = false;
     this.movies = [];
+    this.displayedMovies = [];
     this.showMovies();
     this.api.getMovies().subscribe((res) => {
       res.forEach((elem) => {
         this.movies.push(elem);
       })
+      for(let i=1; i<11;i++){
+        this.displayedMovies.push(this.movies[i])
+      }
     })
   }
 
   getFilteredMovies(){
     this.filtered = true;
     this.movies = [];
+    this.displayedMovies = [];
     this.api.getFilteredMovies(this.search).subscribe((res) => {
       res.forEach((elem) => {
         this.movies.push(elem);
       })
+      for(let i=1; i<11;i++){
+        this.displayedMovies.push(this.movies[i])
+      }
     })
   }
 
@@ -86,17 +97,8 @@ export class DisplayMoviesComponent {
       this.api.putMovie(id, res).subscribe(
         (response : MovieResponse) => {
           let newMovie: Movie = response.data;
-          // {
-          //   name: response.data.name,
-          //   length: response.data.length,
-          //   rating: response.data.rating,
-          //   producer: response.data.producer,
-          //   director: response.data.director,
-          //   id: response.data.id
-          // };
-          // let newMovie = response.data;
           console.log(newMovie)
-          this.movies[index] = newMovie;
+          this.displayedMovies[index] = newMovie;
           console.log('Film został zedytowany');
         }
       )
@@ -116,7 +118,33 @@ export class DisplayMoviesComponent {
         (response) => {
           console.log('Film został usunięty');
         },);
-      this.movies.splice(index, 1);
+      this.displayedMovies.splice(index, 1);
     });
+  }
+
+  length = 40
+  pageSize = 10;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10];
+
+  hidePageSize = true;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+  disabled = false;
+
+  pageEvent: PageEvent;
+
+  handlePageEvent(e: PageEvent) {
+    this.displayedMovies = [];
+    this.pageEvent = e;
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    for(let i=this.pageIndex*this.pageSize+1; i<this.pageIndex*this.pageSize+11;i++){
+      if(this.movies[i]){
+        this.displayedMovies.push(this.movies[i])
+      }
+
+    }
   }
 }
