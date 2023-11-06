@@ -4,7 +4,6 @@ export interface Director {
   id: number;
   name: string;
   nationality: string;
-  movies: Movie[];
   age: number;
 }
 

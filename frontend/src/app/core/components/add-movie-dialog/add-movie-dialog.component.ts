@@ -15,14 +15,7 @@ import { ApiDirectorService } from '../../services/api-director.service';
 })
 export class AddMovieDialogComponent implements OnInit{
   isSame$: Observable<boolean>;
-  form: FormGroup = new FormGroup({
-    name: new FormControl(''), // Upewnij się, że 'director_id' jest uwzględniony
-    producer: new FormControl(''),
-    rating: new FormControl(''),
-    length: new FormControl('')
-  });
-  control = new FormControl<number>(1)
-  // director_id: number;
+  form: FormGroup;
   isEdit: boolean;
   directors: Director[] = [];
 

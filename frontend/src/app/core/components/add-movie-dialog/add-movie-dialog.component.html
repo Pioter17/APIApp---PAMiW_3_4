@@ -18,12 +18,22 @@
     </mat-error>
   </mat-form-field>
 
+  <!-- <mat-form-field appearance="fill">
+    <mat-label>Reżyser</mat-label>
+    <input
+      matInput
+      type="number"
+      formControlName="director_id"
+    >
+    <mat-error>
+      Wymagane
+    </mat-error>
+  </mat-form-field> -->
+
   <mat-form-field appearance="fill">
     <mat-label>Reżyser</mat-label>
     <mat-select
     formControlName="director_id"
-    name="director_id"
-    [formControl]="control"
     >
       <mat-option
         *ngFor="let director of directors"
@@ -33,6 +43,8 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+
+
 
   <mat-form-field appearance="fill">
     <mat-label>Wydawca</mat-label>

@@ -66,7 +66,6 @@ export class DisplayDirectorsComponent {
         (response) => {
           let newDirector: Director = response;
           this.directors.push(newDirector);
-          console.log('Film został dodany');
         },);
     });
   }

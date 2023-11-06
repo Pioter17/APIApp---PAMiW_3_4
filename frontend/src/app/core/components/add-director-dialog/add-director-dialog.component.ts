@@ -46,7 +46,6 @@ export class AddDirectorDialogComponent implements OnInit{
       nationality: formResult.nationality,
       age: formResult.age,
       isEdit: this.isEdit,
-      movies: []
     };
 
     this.form.reset();

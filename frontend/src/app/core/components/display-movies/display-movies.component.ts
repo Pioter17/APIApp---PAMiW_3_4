@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs';
-import { Movie } from '../../interfaces/movie';
+import { Movie, MovieResponse } from '../../interfaces/movie';
 import { ApiMovieService } from '../../services/api-movie-service.service';
 import { AddMovieDialogComponent } from '../add-movie-dialog/add-movie-dialog.component';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
@@ -63,7 +63,7 @@ export class DisplayMoviesComponent {
     ).subscribe((res) => {
       this.api.postMovie(res).subscribe(
         (response) => {
-          let newMovie: Movie = response;
+          let newMovie: Movie = response.data;
           this.movies.push(newMovie);
           console.log('Film został dodany');
         },);
@@ -84,8 +84,18 @@ export class DisplayMoviesComponent {
       filter((res) => !!res),
     ).subscribe((res) => {
       this.api.putMovie(id, res).subscribe(
-        (response) => {
-          let newMovie: Movie = response;
+        (response : MovieResponse) => {
+          let newMovie: Movie = response.data;
+          // {
+          //   name: response.data.name,
+          //   length: response.data.length,
+          //   rating: response.data.rating,
+          //   producer: response.data.producer,
+          //   director: response.data.director,
+          //   id: response.data.id
+          // };
+          // let newMovie = response.data;
+          console.log(newMovie)
           this.movies[index] = newMovie;
           console.log('Film został zedytowany');
         }

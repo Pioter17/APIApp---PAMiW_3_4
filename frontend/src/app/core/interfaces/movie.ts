@@ -20,3 +20,9 @@ export interface MovieDTO {
 export interface MovieDialogData extends MovieDTO {
   isEdit: boolean;
 }
+
+export interface MovieResponse {
+  data: Movie;
+  isSuccess: boolean;
+  message: string;
+}
