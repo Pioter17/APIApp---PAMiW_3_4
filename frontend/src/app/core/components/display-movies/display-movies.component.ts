@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs';
 import { Movie } from '../../interfaces/movie';
 import { ApiMovieService } from '../../services/api-movie-service.service';
-import { AddBookDialogComponent } from '../add-book-dialog/add-book-dialog.component';
+import { AddMovieDialogComponent } from '../add-movie-dialog/add-movie-dialog.component';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -53,7 +53,7 @@ export class DisplayMoviesComponent {
   }
 
   addMovie(){
-    const dialogRef = this.dialog.open(AddBookDialogComponent, {
+    const dialogRef = this.dialog.open(AddMovieDialogComponent, {
       minWidth: '400px',
       minHeight: '300px',
     });
@@ -71,7 +71,7 @@ export class DisplayMoviesComponent {
   }
 
   updateMovie(id: number, index: number){
-    const dialogRef = this.dialog.open(AddBookDialogComponent, {
+    const dialogRef = this.dialog.open(AddMovieDialogComponent, {
       minWidth: '400px',
       minHeight: '300px',
       data:{

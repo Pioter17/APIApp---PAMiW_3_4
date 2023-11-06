@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PATHS } from '../constants/api-paths.const';
-import { Movie } from '../interfaces/movie';
+import { Movie, MovieDTO } from '../interfaces/movie';
 
 
 @Injectable({
@@ -22,11 +22,11 @@ export class ApiMovieService {
     return this.http.get<Movie[]>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.MOVIES_ENDPOINT}`);
   }
 
-  postMovie(movie: Movie) : Observable<Movie> {
+  postMovie(movie: MovieDTO) : Observable<Movie> {
     return this.http.post<Movie>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.MOVIES_ENDPOINT}`, movie)
   }
 
-  putMovie(id: number, movie: Movie) : Observable<Movie> {
+  putMovie(id: number, movie: MovieDTO) : Observable<Movie> {
     return this.http.put<Movie>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.MOVIES_ENDPOINT}` + "/" + id, movie)
   }
 

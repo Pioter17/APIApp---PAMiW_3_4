@@ -1,29 +1,31 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { isEqual } from 'lodash';
 import { Observable, map, merge, of } from 'rxjs';
-import { MovieDialogData } from '../../interfaces/movie';
 import { MovieFormCreatorService } from '../../services/movie-form-creator.service';
+import { MovieDialogData } from '../../interfaces/movie';
+import { isEqual } from 'lodash';
+import { DirectorFormCreatorService } from '../../services/director-form-creator.service';
+import { DirectorDialogData } from '../../interfaces/director';
 
 @Component({
-  selector: 'app-add-book-dialog',
-  templateUrl: './add-book-dialog.component.html',
-  styleUrls: ['./add-book-dialog.component.scss']
+  selector: 'app-add-director-dialog',
+  templateUrl: './add-director-dialog.component.html',
+  styleUrls: ['./add-director-dialog.component.scss']
 })
-export class AddBookDialogComponent implements OnInit{
+export class AddDirectorDialogComponent implements OnInit{
   isSame$: Observable<boolean>;
   form: FormGroup;
   isEdit: boolean;
 
   constructor(
-    public dialogRef: MatDialogRef<AddBookDialogComponent>,
-    private movieFormCreatorService: MovieFormCreatorService,
-    @Inject(MAT_DIALOG_DATA) private dataForm: MovieDialogData,
+    public dialogRef: MatDialogRef<AddDirectorDialogComponent>,
+    private directorFormCreatorService: DirectorFormCreatorService,
+    @Inject(MAT_DIALOG_DATA) private dataForm: DirectorDialogData,
   ) { }
 
   ngOnInit(): void {
-    this.form = this.movieFormCreatorService.getMovieForm();
+    this.form = this.directorFormCreatorService.getDirectorForm();
     this.form.patchValue(this.dataForm);
     this.isEdit = this.dataForm?.isEdit;
     if (this.isEdit) {
@@ -39,21 +41,19 @@ export class AddBookDialogComponent implements OnInit{
 
   onAddClose() {
     const formResult = this.form.value;
-    let newMovie : MovieDialogData = {
+    let newDirector : DirectorDialogData = {
       name: formResult.name,
-      director: formResult.director,
-      producer: formResult.producer,
-      rating: formResult.rating,
-      length: formResult.length,
-      isEdit: this.isEdit
+      nationality: formResult.nationality,
+      age: formResult.age,
+      isEdit: this.isEdit,
+      movies: []
     };
 
     this.form.reset();
-    this.dialogRef.close(newMovie);
+    this.dialogRef.close(newDirector);
   }
 
   onCancelClose() {
     this.dialogRef.close(null);
   }
 }
-

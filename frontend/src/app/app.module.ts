@@ -16,8 +16,10 @@ import { DisplayMoviesComponent } from './core/components/display-movies/display
 import { DisplayWeatherComponent } from './core/components/display-weather/display-weather.component';
 import { AccuweatherInterceptor } from './core/interceptors/accuweather.interceptor';
 import { ApiWeatherService } from './core/services/api-weather-service.service';
-import { AddBookDialogComponent } from './core/components/add-book-dialog/add-book-dialog.component';
+import { AddMovieDialogComponent } from './core/components/add-movie-dialog/add-movie-dialog.component';
 import { ConfirmationDialogComponent } from './core/components/confirmation-dialog/confirmation-dialog.component';
+import { DisplayDirectorsComponent } from './core/components/display-directors/display-directors.component';
+import { AddDirectorDialogComponent } from './core/components/add-director-dialog/add-director-dialog.component';
 
 
 @NgModule({
@@ -26,8 +28,10 @@ import { ConfirmationDialogComponent } from './core/components/confirmation-dial
     CitySearchComponent,
     DisplayWeatherComponent,
     DisplayMoviesComponent,
-    AddBookDialogComponent,
-    ConfirmationDialogComponent
+    AddMovieDialogComponent,
+    ConfirmationDialogComponent,
+    DisplayDirectorsComponent,
+    AddDirectorDialogComponent
   ],
   imports: [
     BrowserModule,

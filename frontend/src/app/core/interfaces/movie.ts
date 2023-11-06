@@ -9,6 +9,14 @@ export interface Movie {
   length: number;
 }
 
-export interface MovieDialogData extends Omit<Movie, "id"> {
+export interface MovieDTO {
+  name: string;
+  director_id: number;
+  producer: string;
+  rating: number;
+  length: number;
+}
+
+export interface MovieDialogData extends MovieDTO {
   isEdit: boolean;
 }

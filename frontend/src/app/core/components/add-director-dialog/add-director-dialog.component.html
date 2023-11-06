@@ -1,13 +1,13 @@
 <h2 mat-dialog-title>
-  {{isEdit? 'Edytuj' : 'Dodaj'}} Film
+  {{isEdit? 'Edytuj' : 'Dodaj'}} Reżysera
 </h2>
 <form
   [formGroup]="form"
-  class="add__subject__form"
+  class="add__director__form"
 >
 
   <mat-form-field appearance="fill">
-    <mat-label>Nazwa</mat-label>
+    <mat-label>Imię i nazwisko</mat-label>
     <input
       matInput
       type="text"
@@ -19,11 +19,11 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Reżyser</mat-label>
+    <mat-label>Narodowość</mat-label>
     <input
       matInput
       type="text"
-      formControlName="director"
+      formControlName="nationality"
     >
     <mat-error>
       Wymagane
@@ -31,38 +31,14 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Wydawca</mat-label>
-    <input
-      matInput
-      type="text"
-      formControlName="producer"
-    >
-    <mat-error>
-      Wymagane
-    </mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Ocena</mat-label>
+    <mat-label>Wiek</mat-label>
     <input
       matInput
       type="number"
-      formControlName="rating"
+      formControlName="age"
     >
     <mat-error>
-      Wymagana wartość w zakresie od 1 do 10
-    </mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Długość</mat-label>
-    <input
-      matInput
-      type="number"
-      formControlName="length"
-    >
-    <mat-error>
-      Wymagana wartość większa lub równa 1
+      Wymagana wartość w zakresie od 20 do 90
     </mat-error>
   </mat-form-field>
 

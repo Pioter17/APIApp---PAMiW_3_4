@@ -16,19 +16,19 @@ export class ApiDirectorService {
     return this.http.get<Director[]>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.SEARCH_DIRECTORS_ENDPOINT}`, {params});
   }
 
-  getMovies() : Observable<Director[]> {
+  getDirectors() : Observable<Director[]> {
     return this.http.get<Director[]>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.DIRECTORS_ENDPOINT}`);
   }
 
-  postMovie(director: Director) : Observable<Director> {
+  postDirector(director: Director) : Observable<Director> {
     return this.http.post<Director>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.DIRECTORS_ENDPOINT}`, director)
   }
 
-  putMovie(id: number, director: Director) : Observable<Director> {
+  putDirector(id: number, director: Director) : Observable<Director> {
     return this.http.put<Director>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.DIRECTORS_ENDPOINT}` + "/" + id, director)
   }
 
-  deleteMovie(id: number){
+  deleteDirector(id: number){
     return this.http.delete<Director>(`${PATHS.API_MOVIES_BASE_PATH}${PATHS.DIRECTORS_ENDPOINT}` + "/" + id)
   }
 }
